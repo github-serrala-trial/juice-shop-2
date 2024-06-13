@@ -7,11 +7,11 @@ WORKDIR /juice-shop
 # Install outdated and insecure versions of packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    curl=7.64.0-4+deb10u2 \
-    openssl=1.1.1d-0+deb10u2 \
-    wget=1.20.1-1.1 \
-    vim=2:8.1.0875-5 \
-    libssl1.1=1.1.1d-0+deb10u2 \
+    curl \
+    openssl \
+    wget \
+    vim \
+    libssl1.1 \
     && apt-get clean
 
 RUN npm i -g typescript ts-node
