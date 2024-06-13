@@ -1,6 +1,19 @@
+# Insecure and outdated software installation for testing purposes; do not use!
+
 FROM node:20-buster as installer
 COPY . /juice-shop
 WORKDIR /juice-shop
+
+# Install outdated and insecure versions of packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    curl=7.64.0-4+deb10u2 \
+    openssl=1.1.1d-0+deb10u2 \
+    wget=1.20.1-1.1 \
+    vim=2:8.1.0875-5 \
+    libssl1.1=1.1.1d-0+deb10u2 \
+    && apt-get clean
+
 RUN npm i -g typescript ts-node
 RUN npm install --omit=dev --unsafe-perm
 RUN npm dedupe --omit=dev
@@ -46,6 +59,6 @@ LABEL maintainer="Bjoern Kimminich <bjoern.kimminich@owasp.org>" \
 WORKDIR /juice-shop
 COPY --from=installer --chown=65532:0 /juice-shop .
 COPY --chown=65532:0 --from=libxmljs-builder /juice-shop/node_modules/libxmljs ./node_modules/libxmljs
-USER 65532
+USER root
 EXPOSE 3000
 CMD ["/juice-shop/build/app.js"]
